@@ -1,16 +1,41 @@
+import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:r3speechplayer/program.dart';
-
-import 'package:r3speechplayer/settting.dart';
+import 'package:provider/provider.dart';
 import 'package:r3speechplayer/transition.dart';
+import 'package:r3speechplayer/viewModel/home.dart';
+
+import 'model/home.dart';
+
+class HomeProvider extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    debugPrint('build HomeProvider');
+    return StateNotifierProvider<HomeVM, HomeM>(
+      create: (_) => HomeVM(),
+      child: Home(),
+    );
+  }
+
+}
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO StateNotifier系のロード
+    debugPrint('build Home');
+    final vm = context.select((HomeVM vm) => vm);
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      debugPrint('addPostFrameCallback');
+      final manifestJson = await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
+      final Map<String, dynamic> manifestMap = json.decode(manifestJson);
+      vm.init(manifestMap);
+    });
+    final programs = context.select((HomeM model) => model.programs);
     return Scaffold(
       /// カルーセルスライダーでスワイプ可能に。
       /// 高さは画面の半分くらい
@@ -38,15 +63,19 @@ class Home extends StatelessWidget {
 //          ),
           CarouselSlider.builder(
             itemBuilder: (context, index, realIndex) {
-              /// 各演目の画像、タイトル、説明、スタートボタン（＝演目詳細画面に遷移）を表示
-              return _ProgramCard(index);
+              if(programs.length < 1){
+                return Center(child: Text('演目が見つかりません'),);
+              } else{
+                /// 各演目の画像、タイトル、説明、スタートボタン（＝演目詳細画面に遷移）を表示
+                return _ProgramCard(index);
+              }
             },
             options: CarouselOptions(
               height: MediaQuery.of(context).size.height * 2 / 3,
               autoPlay: true,
               autoPlayInterval: const Duration(seconds: 10),
             ),
-            itemCount: 3,
+            itemCount: programs.length,
           ),
         ],
       ),
@@ -59,14 +88,15 @@ class _ProgramCard extends StatelessWidget {
 
   _ProgramCard(this.index);
 
-  final List<String> imagePath = [
-    "assets/program01.jpg",
-    "assets/program02.jpg",
-    "assets/program03.jpg"
-  ];
+//  final List<String> imagePath = [
+//    "assets/program01.jpg",
+//    "assets/program02.jpg",
+//    "assets/program03.jpg"
+//  ];
 
   @override
   Widget build(BuildContext context) {
+    final program = context.select((HomeM model) => model.programs[index]);
     return Card(
       color: HexColor("#2A2924"),
       child: Column(
@@ -78,14 +108,14 @@ class _ProgramCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 30),
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 4 / 5,
-              child: Image.asset(imagePath[index]),
+              child: Image.asset(program.imagePath),
             ),
           ),
 
           /// タイトル、説明、スタートボタン
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15),
-            child: _Description(),
+            child: _Description(index),
           ),
         ],
       ),
@@ -94,8 +124,12 @@ class _ProgramCard extends StatelessWidget {
 }
 
 class _Description extends StatelessWidget {
+  final int index;
+
+  _Description(this.index);
   @override
   Widget build(BuildContext context) {
+    final program = context.select((HomeM model) => model.programs[index]);
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,14 +147,20 @@ class _Description extends StatelessWidget {
                   child : RichText(
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
-                    text: TextSpan(text: "Title"),
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 20
+                      ),
+                        text: program.title + '  /  ' + program.author,
+                    ),
                   ),
                 ),
                 RichText(
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
-                    text: TextSpan(
-                        text:'subtitle subtitle subtitle subtitle subtitle subtitle subtitle subtitle subtitle subtitle subtitle subtitle subtitle subtitle subtitle subtitle')
+                  text: TextSpan(
+                    children: _contentSpans(program.content)
+                  ),
                 ),
               ],
             )
@@ -142,11 +182,16 @@ class _Description extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.of(context)
-                    .pushReplacement(fadeTransitionRoute(Program()));
+                    .pushReplacement(fadeTransitionRoute(ProgramProvider(program: program)));
               },
             )
         ),
       ],
     );
+  }
+  List<InlineSpan> _contentSpans(List<String> content){
+    var contentWidgets = List<InlineSpan>();
+    content.forEach((line) => contentWidgets.add(TextSpan(text: line)));
+    return contentWidgets;
   }
 }

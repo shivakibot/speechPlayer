@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:r3speechplayer/repository/localDatabase.dart';
 
 import 'home.dart';
 
 void main() {
-  // TODO get_it のロード
+  GetIt.I.registerSingleton<Audio>(Audio());
   runApp(MyApp());
 }
 
@@ -13,7 +15,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // TODO Multi Provider 系
     const locale = Locale("ja", "JP");
     return MaterialApp(
       title: 'Flutter Demo',
@@ -75,24 +76,10 @@ class MyApp extends StatelessWidget {
 
         ),
         textTheme: TextTheme(
-//          headline6: TextStyle(
-//            color: Colors.white,
-//          ),
-//          subtitle1: TextStyle(
-//            color: Colors.white,
-//          ),
-//          caption: TextStyle(
-//            color: Colors.white,
-//          ),
-//          bodyText1: TextStyle(
-//            color: Colors.white,
-//          ),
+          /// 通常Text　Widgetで反映される
           bodyText2: TextStyle(
             color: Colors.white,
           ),
-//          button: TextStyle(
-//            color: Colors.white,
-//          ),
           headline5: TextStyle(
             color: Colors.white,
           ),
@@ -116,7 +103,7 @@ class MyApp extends StatelessWidget {
           ),
 
         ),
-        primaryColor: Colors.white,
+        primaryColor: HexColor("#3D3B32"),
         scaffoldBackgroundColor: HexColor("#3D3B32"),
         visualDensity: VisualDensity.adaptivePlatformDensity,
         accentIconTheme: IconThemeData(
@@ -135,7 +122,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [
         locale,
       ],
-      home: Home(),
+      home: HomeProvider(),
     );
   }
 }
