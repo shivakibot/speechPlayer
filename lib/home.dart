@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:marquee/marquee.dart';
 import 'package:r3speechplayer/program.dart';
 import 'package:provider/provider.dart';
 import 'package:r3speechplayer/transition.dart';
@@ -64,7 +65,12 @@ class Home extends StatelessWidget {
           CarouselSlider.builder(
             itemBuilder: (context, index, realIndex) {
               if(programs.length < 1){
-                return Center(child: Text('演目が見つかりません'),);
+//                return SizedBox(
+//                  height: 100,
+//                  width: 100,
+//                  child: CircularProgressIndicator(),
+//                );
+                return Center(child: Text('Loading...'),);
               } else{
                 /// 各演目の画像、タイトル、説明、スタートボタン（＝演目詳細画面に遷移）を表示
                 return _ProgramCard(index);

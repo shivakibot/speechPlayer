@@ -19,12 +19,14 @@ class _$ProgramModelTearOff {
       String author = '',
       String imagePath = '',
       List<String> content = null,
+      String original = '',
       String mediaPath = ''}) {
     return _ProgramModel(
       title: title,
       author: author,
       imagePath: imagePath,
       content: content,
+      original: original,
       mediaPath: mediaPath,
     );
   }
@@ -40,6 +42,7 @@ mixin _$ProgramModel {
   String get author;
   String get imagePath;
   List<String> get content;
+  String get original;
   String get mediaPath;
 
   @JsonKey(ignore: true)
@@ -56,6 +59,7 @@ abstract class $ProgramModelCopyWith<$Res> {
       String author,
       String imagePath,
       List<String> content,
+      String original,
       String mediaPath});
 }
 
@@ -73,6 +77,7 @@ class _$ProgramModelCopyWithImpl<$Res> implements $ProgramModelCopyWith<$Res> {
     Object author = freezed,
     Object imagePath = freezed,
     Object content = freezed,
+    Object original = freezed,
     Object mediaPath = freezed,
   }) {
     return _then(_value.copyWith(
@@ -80,6 +85,7 @@ class _$ProgramModelCopyWithImpl<$Res> implements $ProgramModelCopyWith<$Res> {
       author: author == freezed ? _value.author : author as String,
       imagePath: imagePath == freezed ? _value.imagePath : imagePath as String,
       content: content == freezed ? _value.content : content as List<String>,
+      original: original == freezed ? _value.original : original as String,
       mediaPath: mediaPath == freezed ? _value.mediaPath : mediaPath as String,
     ));
   }
@@ -97,6 +103,7 @@ abstract class _$ProgramModelCopyWith<$Res>
       String author,
       String imagePath,
       List<String> content,
+      String original,
       String mediaPath});
 }
 
@@ -116,6 +123,7 @@ class __$ProgramModelCopyWithImpl<$Res> extends _$ProgramModelCopyWithImpl<$Res>
     Object author = freezed,
     Object imagePath = freezed,
     Object content = freezed,
+    Object original = freezed,
     Object mediaPath = freezed,
   }) {
     return _then(_ProgramModel(
@@ -123,6 +131,7 @@ class __$ProgramModelCopyWithImpl<$Res> extends _$ProgramModelCopyWithImpl<$Res>
       author: author == freezed ? _value.author : author as String,
       imagePath: imagePath == freezed ? _value.imagePath : imagePath as String,
       content: content == freezed ? _value.content : content as List<String>,
+      original: original == freezed ? _value.original : original as String,
       mediaPath: mediaPath == freezed ? _value.mediaPath : mediaPath as String,
     ));
   }
@@ -135,11 +144,13 @@ class _$_ProgramModel with DiagnosticableTreeMixin implements _ProgramModel {
       this.author = '',
       this.imagePath = '',
       this.content = null,
+      this.original = '',
       this.mediaPath = ''})
       : assert(title != null),
         assert(author != null),
         assert(imagePath != null),
         assert(content != null),
+        assert(original != null),
         assert(mediaPath != null);
 
   @JsonKey(defaultValue: '')
@@ -156,11 +167,14 @@ class _$_ProgramModel with DiagnosticableTreeMixin implements _ProgramModel {
   final List<String> content;
   @JsonKey(defaultValue: '')
   @override
+  final String original;
+  @JsonKey(defaultValue: '')
+  @override
   final String mediaPath;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProgramModel(title: $title, author: $author, imagePath: $imagePath, content: $content, mediaPath: $mediaPath)';
+    return 'ProgramModel(title: $title, author: $author, imagePath: $imagePath, content: $content, original: $original, mediaPath: $mediaPath)';
   }
 
   @override
@@ -172,6 +186,7 @@ class _$_ProgramModel with DiagnosticableTreeMixin implements _ProgramModel {
       ..add(DiagnosticsProperty('author', author))
       ..add(DiagnosticsProperty('imagePath', imagePath))
       ..add(DiagnosticsProperty('content', content))
+      ..add(DiagnosticsProperty('original', original))
       ..add(DiagnosticsProperty('mediaPath', mediaPath));
   }
 
@@ -189,6 +204,9 @@ class _$_ProgramModel with DiagnosticableTreeMixin implements _ProgramModel {
             (identical(other.content, content) ||
                 const DeepCollectionEquality()
                     .equals(other.content, content)) &&
+            (identical(other.original, original) ||
+                const DeepCollectionEquality()
+                    .equals(other.original, original)) &&
             (identical(other.mediaPath, mediaPath) ||
                 const DeepCollectionEquality()
                     .equals(other.mediaPath, mediaPath)));
@@ -201,6 +219,7 @@ class _$_ProgramModel with DiagnosticableTreeMixin implements _ProgramModel {
       const DeepCollectionEquality().hash(author) ^
       const DeepCollectionEquality().hash(imagePath) ^
       const DeepCollectionEquality().hash(content) ^
+      const DeepCollectionEquality().hash(original) ^
       const DeepCollectionEquality().hash(mediaPath);
 
   @JsonKey(ignore: true)
@@ -215,6 +234,7 @@ abstract class _ProgramModel implements ProgramModel {
       String author,
       String imagePath,
       List<String> content,
+      String original,
       String mediaPath}) = _$_ProgramModel;
 
   @override
@@ -225,6 +245,8 @@ abstract class _ProgramModel implements ProgramModel {
   String get imagePath;
   @override
   List<String> get content;
+  @override
+  String get original;
   @override
   String get mediaPath;
   @override

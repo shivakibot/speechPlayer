@@ -15,6 +15,7 @@ abstract class AudioState with _$AudioState{
 //    @Default(AudioPlayerState.STOPPED) AudioPlayerState status,
     @Default(true) bool progress,
     @Default(true) bool sound,
+    @Default(0) int captionIndex,
     ProgramModel program,
   }) = _AudioState;
 }

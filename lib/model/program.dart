@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'program.freezed.dart';
@@ -10,6 +9,7 @@ abstract class ProgramModel with _$ProgramModel{
     @Default('') String author,
     @Default('') String imagePath,
     @Default(null) List<String> content,
+    @Default('') String original,
     @Default('') String mediaPath,
   }) = _ProgramModel;
 }

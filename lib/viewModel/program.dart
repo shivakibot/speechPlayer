@@ -1,14 +1,20 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:r3speechplayer/model/audioState.dart';
 import 'package:r3speechplayer/model/program.dart';
 import 'package:r3speechplayer/repository/localDatabase.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 class ProgramVM extends StateNotifier<AudioState> with LocatorMixin{
   final _repo = GetIt.I<Audio>();
+  Timer _timer;
   final ProgramModel program;
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   ProgramVM(this.program) : super(AudioState()){
     debugPrint('const ProgramVM');
     state = state.copyWith(program: program);
@@ -19,6 +25,7 @@ class ProgramVM extends StateNotifier<AudioState> with LocatorMixin{
     debugPrint('initState ProgramVM');
     init();
   }
+
   void init() async{
     debugPrint('init ProgramVM');
     AudioPlayer media = await _repo.init(program.mediaPath);
@@ -41,7 +48,13 @@ class ProgramVM extends StateNotifier<AudioState> with LocatorMixin{
     });
     media.onDurationChanged.listen((duration) async{
       if(mounted){
+        debugPrint('onDurationChanged called');
         state = state.copyWith(duration: duration);
+        /// 字幕タイマーのセット
+        if(_timer == null){
+          debugPrint('init _timer');
+          _timer = Timer.periodic(Duration(milliseconds : (scrollCaptionDuration(duration, state.program.content.length-1)*1000).round()), (timer) => scrollCaptionLine());
+        }
       }
     });
     media.onNotificationPlayerStateChanged.listen((event) {
@@ -60,6 +73,7 @@ class ProgramVM extends StateNotifier<AudioState> with LocatorMixin{
       debugPrint('STOPPED AudioPlayerState');
       state.media.stop();
     }
+    _timer.cancel();
     super.dispose();
   }
 
@@ -90,7 +104,9 @@ class ProgramVM extends StateNotifier<AudioState> with LocatorMixin{
   Future<int> seekInAbsolute(int seconds){
     return _repo.seek(state.media, seconds).then((value) {
       if(value == 1) {
-        state = state.copyWith(position: Duration(seconds: seconds));
+        var index = progressIndex(seconds);
+        /// TODO scroll
+        state = state.copyWith(position: Duration(seconds: seconds), captionIndex: index);
       } else {
         debugPrint('seekInAbsolute error $value');
       }
@@ -109,7 +125,9 @@ class ProgramVM extends StateNotifier<AudioState> with LocatorMixin{
     }
     return _repo.seek(state.media, seekPoint).then((value) {
       if(value == 1) {
-        state = state.copyWith(position: Duration(seconds: seekPoint));
+        var index = progressIndex(seekPoint);
+        /// TODO scroll
+        state = state.copyWith(position: Duration(seconds: seekPoint), captionIndex: index);
       } else {
         debugPrint('seekInAbsolute error $value');
       }
@@ -140,5 +158,41 @@ class ProgramVM extends StateNotifier<AudioState> with LocatorMixin{
     }).catchError((e){
       debugPrint('$e');
     });
+  }
+
+  void jumpCaptionLine(int movePoint){
+    /// 再生中なのでスクロールを実行
+    debugPrint('call jumpCaptionLine $movePoint');
+    itemScrollController.jumpTo(index: progressIndex(movePoint));
+    state = state.copyWith(captionIndex: progressIndex(movePoint));
+  }
+
+
+  void scrollCaptionLine() {
+    debugPrint('call scrollCaptionLine');
+    if(mounted){
+      debugPrint('mounted scrollCaptionLine');
+      if(state.progress){
+        debugPrint('progress scrollCaptionLine');
+        /// 再生中なのでスクロールを実行
+        /// TODO 対象のスクロールロジックが合ってない。
+        int next = state.captionIndex + 1;
+        debugPrint('scroll $next index');
+        itemScrollController.scrollTo(index: next, duration: Duration(milliseconds: 200));
+        state = state.copyWith(captionIndex: next);
+      }
+    }
+  }
+
+  double scrollCaptionDuration(Duration _duration, int length){
+
+    debugPrint('scrollCaptionDuration ${(_duration.inSeconds/length)} millsec');
+    return _duration.inSeconds/length;
+  }
+
+  int progressIndex(int movePoint){
+    debugPrint('start progressIndex');
+    debugPrint('${state.program.original.length} / $movePoint * ${scrollCaptionDuration(state.duration, state.program.original.length)} * ${state.program.content.length}');
+    return ((state.program.original.length / (movePoint * scrollCaptionDuration(state.duration, state.program.original.length))) * state.program.content.length).round();
   }
 }

@@ -20,6 +20,7 @@ class HomeVM extends StateNotifier<HomeM> with LocatorMixin{
     List<String> dirList;
     List<ProgramModel> programs = [];
     List<String> content;
+    String original;
     /// 取得したAssets のマップから対象のkey のディレクトリリストを生成
     await Future.forEach<ProgramList>(ProgramList.values, (program) async{
 //      debugPrint('ProgramList forEach $program');
@@ -29,8 +30,11 @@ class HomeVM extends StateNotifier<HomeM> with LocatorMixin{
         dirList.sort((a, b) => a.length.compareTo(b.length));
 //        debugPrint('$program sort $dirList');
         //// image => speech => content の順番になる気がする
-        content = await rootBundle.loadString('${dirList[2]}').then((content) => content.split('\r\n').toList());
-        programs.add(ProgramModel(title: program.title, author: program.author, imagePath: dirList[0], mediaPath: dirList[1], content: content));
+        /// 字数カウントしておく。
+        original = await rootBundle.loadString('${dirList[2]}');
+        debugPrint('${program.title}.add ${original.length}');
+        content = original.split('\r\n').toList();
+        programs.add(ProgramModel(title: program.title, author: program.author, imagePath: dirList[0], mediaPath: dirList[1], content: content, original: original));
 //        debugPrint('programs.add $program');
       }
     });

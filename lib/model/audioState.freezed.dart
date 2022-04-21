@@ -20,6 +20,7 @@ class _$AudioStateTearOff {
       Duration duration = const Duration(seconds: 0),
       bool progress = true,
       bool sound = true,
+      int captionIndex = 0,
       ProgramModel program}) {
     return _AudioState(
       media: media,
@@ -27,6 +28,7 @@ class _$AudioStateTearOff {
       duration: duration,
       progress: progress,
       sound: sound,
+      captionIndex: captionIndex,
       program: program,
     );
   }
@@ -45,6 +47,7 @@ mixin _$AudioState {
 //    @Default(AudioPlayerState.STOPPED) AudioPlayerState status,
   bool get progress;
   bool get sound;
+  int get captionIndex;
   ProgramModel get program;
 
   @JsonKey(ignore: true)
@@ -62,6 +65,7 @@ abstract class $AudioStateCopyWith<$Res> {
       Duration duration,
       bool progress,
       bool sound,
+      int captionIndex,
       ProgramModel program});
 
   $ProgramModelCopyWith<$Res> get program;
@@ -82,6 +86,7 @@ class _$AudioStateCopyWithImpl<$Res> implements $AudioStateCopyWith<$Res> {
     Object duration = freezed,
     Object progress = freezed,
     Object sound = freezed,
+    Object captionIndex = freezed,
     Object program = freezed,
   }) {
     return _then(_value.copyWith(
@@ -90,6 +95,8 @@ class _$AudioStateCopyWithImpl<$Res> implements $AudioStateCopyWith<$Res> {
       duration: duration == freezed ? _value.duration : duration as Duration,
       progress: progress == freezed ? _value.progress : progress as bool,
       sound: sound == freezed ? _value.sound : sound as bool,
+      captionIndex:
+          captionIndex == freezed ? _value.captionIndex : captionIndex as int,
       program: program == freezed ? _value.program : program as ProgramModel,
     ));
   }
@@ -117,6 +124,7 @@ abstract class _$AudioStateCopyWith<$Res> implements $AudioStateCopyWith<$Res> {
       Duration duration,
       bool progress,
       bool sound,
+      int captionIndex,
       ProgramModel program});
 
   @override
@@ -140,6 +148,7 @@ class __$AudioStateCopyWithImpl<$Res> extends _$AudioStateCopyWithImpl<$Res>
     Object duration = freezed,
     Object progress = freezed,
     Object sound = freezed,
+    Object captionIndex = freezed,
     Object program = freezed,
   }) {
     return _then(_AudioState(
@@ -148,6 +157,8 @@ class __$AudioStateCopyWithImpl<$Res> extends _$AudioStateCopyWithImpl<$Res>
       duration: duration == freezed ? _value.duration : duration as Duration,
       progress: progress == freezed ? _value.progress : progress as bool,
       sound: sound == freezed ? _value.sound : sound as bool,
+      captionIndex:
+          captionIndex == freezed ? _value.captionIndex : captionIndex as int,
       program: program == freezed ? _value.program : program as ProgramModel,
     ));
   }
@@ -161,11 +172,13 @@ class _$_AudioState with DiagnosticableTreeMixin implements _AudioState {
       this.duration = const Duration(seconds: 0),
       this.progress = true,
       this.sound = true,
+      this.captionIndex = 0,
       this.program})
       : assert(position != null),
         assert(duration != null),
         assert(progress != null),
-        assert(sound != null);
+        assert(sound != null),
+        assert(captionIndex != null);
 
   @override
   final AudioPlayer media;
@@ -183,12 +196,15 @@ class _$_AudioState with DiagnosticableTreeMixin implements _AudioState {
   @JsonKey(defaultValue: true)
   @override
   final bool sound;
+  @JsonKey(defaultValue: 0)
+  @override
+  final int captionIndex;
   @override
   final ProgramModel program;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AudioState(media: $media, position: $position, duration: $duration, progress: $progress, sound: $sound, program: $program)';
+    return 'AudioState(media: $media, position: $position, duration: $duration, progress: $progress, sound: $sound, captionIndex: $captionIndex, program: $program)';
   }
 
   @override
@@ -201,6 +217,7 @@ class _$_AudioState with DiagnosticableTreeMixin implements _AudioState {
       ..add(DiagnosticsProperty('duration', duration))
       ..add(DiagnosticsProperty('progress', progress))
       ..add(DiagnosticsProperty('sound', sound))
+      ..add(DiagnosticsProperty('captionIndex', captionIndex))
       ..add(DiagnosticsProperty('program', program));
   }
 
@@ -221,6 +238,9 @@ class _$_AudioState with DiagnosticableTreeMixin implements _AudioState {
                     .equals(other.progress, progress)) &&
             (identical(other.sound, sound) ||
                 const DeepCollectionEquality().equals(other.sound, sound)) &&
+            (identical(other.captionIndex, captionIndex) ||
+                const DeepCollectionEquality()
+                    .equals(other.captionIndex, captionIndex)) &&
             (identical(other.program, program) ||
                 const DeepCollectionEquality().equals(other.program, program)));
   }
@@ -233,6 +253,7 @@ class _$_AudioState with DiagnosticableTreeMixin implements _AudioState {
       const DeepCollectionEquality().hash(duration) ^
       const DeepCollectionEquality().hash(progress) ^
       const DeepCollectionEquality().hash(sound) ^
+      const DeepCollectionEquality().hash(captionIndex) ^
       const DeepCollectionEquality().hash(program);
 
   @JsonKey(ignore: true)
@@ -248,6 +269,7 @@ abstract class _AudioState implements AudioState {
       Duration duration,
       bool progress,
       bool sound,
+      int captionIndex,
       ProgramModel program}) = _$_AudioState;
 
   @override
@@ -262,6 +284,8 @@ abstract class _AudioState implements AudioState {
   bool get progress;
   @override
   bool get sound;
+  @override
+  int get captionIndex;
   @override
   ProgramModel get program;
   @override

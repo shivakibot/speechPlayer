@@ -29,15 +29,17 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   # ここから３つで使わなくなったやつは削除すること
-  video_player:
-  audio_service:
-  audioplayers:
+#  video_player:
+#  audio_service:
+  audioplayers: 0.16.2
   hexcolor:
   get_it:
   provider: 4.1.0-dev+2
   carousel_slider:
   flutter_state_notifier:
   freezed_annotation:
+  marquee:
+  scrollable_positioned_list:
   flutter_localizations:
     sdk: flutter
 dev_dependencies:

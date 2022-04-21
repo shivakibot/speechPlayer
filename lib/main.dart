@@ -112,6 +112,7 @@ class MyApp extends StatelessWidget {
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
+        cardColor: HexColor("#614B4B"),
       ),
       locale: locale,
       localizationsDelegates: const [
