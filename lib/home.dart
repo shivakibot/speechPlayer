@@ -36,14 +36,15 @@ class Home extends StatelessWidget {
       vm.init(manifestMap);
     });
     final programs = context.select((HomeM model) => model.programs);
-    return Scaffold(
-      /// カルーセルスライダーでスワイプ可能に。
-      /// 高さは画面の半分くらい
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
+    return SafeArea(
+        child: Scaffold(
+          /// カルーセルスライダーでスワイプ可能に。
+          /// 高さは画面の半分くらい
+          body: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
 //          RaisedButton(
 //            shape: const CircleBorder(
 //              side: const BorderSide(
@@ -61,29 +62,30 @@ class Home extends StatelessWidget {
 //              Navigator.of(context).pushReplacement(fadeTransitionRoute(Setting()));
 //            },
 //          ),
-          CarouselSlider.builder(
-            itemBuilder: (context, index, realIndex) {
-              if(programs.length < 1){
+              CarouselSlider.builder(
+                itemBuilder: (context, index, realIndex) {
+                  if(programs.length < 1){
 //                return SizedBox(
 //                  height: 100,
 //                  width: 100,
 //                  child: CircularProgressIndicator(),
 //                );
-                return Center(child: Text('Loading...'),);
-              } else{
-                /// 各演目の画像、タイトル、説明、スタートボタン（＝演目詳細画面に遷移）を表示
-                return _ProgramCard(index);
-              }
-            },
-            options: CarouselOptions(
-              height: MediaQuery.of(context).size.height * 2 / 3,
-              autoPlay: true,
-              autoPlayInterval: const Duration(seconds: 10),
-            ),
-            itemCount: programs.length,
+                    return Center(child: Text('Loading...'),);
+                  } else{
+                    /// 各演目の画像、タイトル、説明、スタートボタン（＝演目詳細画面に遷移）を表示
+                    return _ProgramCard(index);
+                  }
+                },
+                options: CarouselOptions(
+                  height: MediaQuery.of(context).size.height * 2 / 3,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 10),
+                ),
+                itemCount: programs.length,
+              ),
+            ],
           ),
-        ],
-      ),
+        )
     );
   }
 }

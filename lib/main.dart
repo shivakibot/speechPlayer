@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const locale = Locale("ja", "JP");
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'r3_speechPlayer',
       themeMode: ThemeMode.dark,
       theme: ThemeData(
