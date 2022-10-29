@@ -1,6 +1,6 @@
 # speechPlayer
-![再生リスト](http://drive.google.com/uc?export=view&id=1D7zofVo_KUqAhX6gyunmpVP3J87Cybeu)
-![再生画面](http://drive.google.com/uc?export=view&id=1r8Cooq5oPaK04TscDYDmeb6aPWm4YNba)
+![再生リスト](http://drive.google.com/uc?export=view&id=1BdtPPGMv7dVuNH1JIImsLUMIXqH4aR_S)
+![再生画面](http://drive.google.com/uc?export=view&id=1f8DZQllaD4P7S7kRHgyVwcuNFxQa9Jdu)
 自社新規事業開発向けに製作したメディア再生アプリのプロト。<br>
 音声再生に伴って、音声のテキストデータを自動スクロールできるようにしたもの。上記案件で棄却された為、以降のメンテ及び開発は停止している。
 
