@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     const locale = Locale("ja", "JP");
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'r3_speechPlayer',
+      themeMode: ThemeMode.dark,
       theme: ThemeData(
         sliderTheme: SliderThemeData(
           /// 有効になっている値の部分の色
@@ -33,6 +34,8 @@ class MyApp extends StatelessWidget {
           textTheme: ButtonTextTheme.accent,
           buttonColor: Colors.white,
         ),
+        primarySwatch: Colors.brown,
+        primaryColorDark: HexColor("#3D3B32"),
         primaryTextTheme: TextTheme(
           headline6: TextStyle(
             color: Colors.white,

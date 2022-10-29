@@ -36,40 +36,42 @@ class Program extends StatelessWidget {
     final path = context.select((AudioState state) => state.program.imagePath);
     final posi = context.select((AudioState state) => state.position);
     final vm = context.select((ProgramVM vm) => vm);
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('$title'),
-      ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 4 / 5,
-            height: MediaQuery.of(context).size.height / 3,
-            child: Image.asset("$path"),
-          ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('$title'),
+        ),
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 4 / 5,
+              height: MediaQuery.of(context).size.height / 3,
+              child: Image.asset("$path"),
+            ),
 
-          /// 字幕
-          _Caption3(),
+            /// 字幕
+            _Caption3(),
 
-          /// メディア Slider
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: _MediaSlider(),
-          ),
+            /// メディア Slider
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: _MediaSlider(),
+            ),
 
-          /// メディア操作UI
-          _MediaController(),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          count= count+1;
-//          vm.itemScrollController.jumpTo(index: count);
-          vm.itemScrollController.scrollTo(index: count, duration: Duration(milliseconds: 200));
-        },
+            /// メディア操作UI
+            _MediaController(),
+          ],
+        ),
+//         floatingActionButton: FloatingActionButton(
+//           onPressed: () {
+//             count= count+1;
+// //          vm.itemScrollController.jumpTo(index: count);
+//             vm.itemScrollController.scrollTo(index: count, duration: Duration(milliseconds: 200));
+//           },
+//         ),
       ),
     );
   }
